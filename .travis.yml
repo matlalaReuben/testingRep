@@ -2,4 +2,4 @@ language: python
 python:
   - "3.7-dev"
 script:
-  - main_hello.py
+  - python3 main_hello.py
