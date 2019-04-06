@@ -1,8 +1,0 @@
-language: python
-before_install:
-  -  pip install mysql-connector-python
-
-python:
-  - "3.7-dev"
-script:
-  - python3 main_file.py
