@@ -4,4 +4,4 @@ connection = mysql.connect( user=self.user, database=self.database, host=self.ho
 mycursor = self.connection.cursor()
 print( connection )
 print( mycursor )
-print("hello world")
+print("hello motherfuckers")
