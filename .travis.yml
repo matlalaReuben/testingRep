@@ -5,4 +5,4 @@ before_install:
 python:
   - "3.7-dev"
 script:
-  - python3 main_hello.py
+  - python3 main_file.py
