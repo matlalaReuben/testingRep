@@ -52,6 +52,7 @@ public class codeone{
 			x = Integer.parseInt( coord[ 0 ] );
 			y = Integer.parseInt( coord[ 1 ] );
 			startEndCoords[ i ] = new Coordinate( x, y );
+			graph.addNode( startEndCoords[ i ] );
 			// map[x][y] = i;
 		}
 
@@ -94,6 +95,8 @@ public class codeone{
 		// 	}
 		// 	System.out.println( );
 		// }
+		graph.runKNN( );
+		graph.printGraph( );
 
 		System.out.println("end");
 	}
