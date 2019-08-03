@@ -30,6 +30,7 @@ public class Graph{
 	}
 
 	public void addEdge(Coordinate one, Coordinate two){
+		System.out.printf("add edge between %s and %s\n", one.toString( ), two.toString( ) );
 		if( ! nodeExist( one ) ){
 			addNode( two );
 		}
@@ -46,6 +47,24 @@ public class Graph{
 		}
 	}
 
+	public void removeEdge(Coordinate one, Coordinate two){
+		System.out.printf( "edge between %s - %s", one.toString( ), two.toString( ) );
+		int indexOfOne = getNodeIndex( one );
+		int indexOfTwo = getNodeIndex( two );
+		int[] indexes = { indexOfOne, indexOfTwo };
+		//
+		for( int i = 0; i < 2 ; i++ ){
+			for( int j = 1; j < Nodes.get( indexes[ i ] ).size( ); j++ ){
+				if( equalNodes( Nodes.get( indexes[ i ] ).get( j ), one  ) || equalNodes( Nodes.get( indexes[ i ] ).get( j ), two  ) ){
+					System.out.printf( " removed %s from %s", Nodes.get( indexes[ i ] ).get( j ).toString( ), Nodes.get( indexes[ i ] ).get( 0 ).toString( )	 );
+					Nodes.get( indexes[ i ] ).remove( j );
+					break;
+				}
+			}
+		}
+		System.out.println();
+		// System.out.println( "not found" );
+	}
 
 	public boolean equalNodes( Coordinate one, Coordinate two ){
 		if( one.getX() == two.getX() &&  one.getY() == two.getY()  ){
@@ -65,46 +84,63 @@ public class Graph{
 		}
 	}
 
-	public void removeNode( Coordinate coord ){
+	// public void removeNode( Coordinate coord ){
+	//
+	// }
 
-	}
 
-
-	public void algorithm(){
+	public void runKNN(){
 		int k = 4;
+		double maxDist = -1;
 		for( int i = 0; i < Nodes.size( ); i++){
 			Coordinate parent = Nodes.get( i ).get( 0 );
 			for( int j = 0; j < Nodes.size(); j++ ){
+				Coordinate child = Nodes.get( j ).get( 0 );
 				if( i==j ){
 					continue;
 				}
-
-				Coordinate child = Nodes.get( j ).get( 0 );
-
-				else if( Nodes.get( i ).size( ) < k+1 ){
+				else if( Nodes.get( i ).size( ) < k+1 && Nodes.get( j ).size( ) < k+1  ){
 					addEdge( parent, child );
 				}
-				else if( getDistance( parent, child ) < getMaxDistance(  ) ){
-					// remove edge
-					
+				else if( getDistance( parent, child ) < getMaxDistance( i ) ){
+					// remove edge with maximum length
+					removeMaxLengthEdge( i );
 				}
-
 			}
 		}
 	}
 	// RETURN MAXIMUM DISTANCE FROM PARENT NODE TO CHILDREN NODES
 	public double getDistance( Coordinate one, Coordinate two ){
 		double dist = Math.sqrt( ( one.getX( ) - two.getX( ) )^2 + ( one.getY( ) - two.getY( ) )^2 );
+		return dist;
+	}
+
+	//	REMOVES NODE WITH MAXIMUM LENGTH
+	public void removeMaxLengthEdge( int parentIndex ){
+		int maxIndex = 0;
+		// double prevDist = -1;
+		double maxDist = -1;
+		Coordinate parent = Nodes.get( parentIndex ).get( 0 );
+		for( int j = 1; j < Nodes.get( parentIndex ).size( ); j++ ){
+			double currDist = getDistance( parent, Nodes.get( parentIndex ).get( j ) );
+			if( currDist > maxDist ){
+				maxDist = currDist;
+				maxIndex = j;
+			}
+		}
+		removeEdge( parent, Nodes.get( parentIndex ).get( maxIndex ) );
 	}
 
 	public double getMaxDistance( Coordinate parent ){
-
 		int parentIndex = getNodeIndex( parent );
+		return getMaxDistance( parentIndex );
+	}
 
+	public double getMaxDistance( int parentIndex ){
 		double maxDist = 0;
-		for( int j = 1; j < Nodes.get( parentIndex ).size( ); i++ ){
+		for( int j = 1; j < Nodes.get( parentIndex ).size( ); j++ ){
 			// Coordinate connected = Nodes.get( parentIndex ).get( j );
-			double dist = getDistance( parent, Nodes.get( parentIndex ).get( j ) );
+			double dist = getDistance( Nodes.get( parentIndex ).get( 0 ), Nodes.get( parentIndex ).get( j ) );
 			if( dist > maxDist ){
 				maxDist = dist;
 			}
@@ -118,7 +154,7 @@ public class Graph{
 				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 }
