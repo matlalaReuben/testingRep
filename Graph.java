@@ -29,22 +29,44 @@ public class Graph{
 			return false;
 	}
 
-	public void addEdge(Coordinate one, Coordinate two){
-		System.out.printf("add edge between %s and %s\n", one.toString( ), two.toString( ) );
-		if( ! nodeExist( one ) ){
-			addNode( two );
+	// public void addEdge(Coordinate one, Coordinate two){
+	// 	System.out.printf("add edge between %s and %s\n", one.toString( ), two.toString( ) );
+	// 	if( ! nodeExist( one ) ){
+	// 		addNode( two );
+	// 	}
+	// 	if( ! nodeExist( two ) ){
+	// 		addNode( one );
+	// 	}
+	// 	for( int i = 0 ; i < Nodes.size(); i++ ){
+	// 		if( equalNodes( Nodes.get( i ).get( 0 ), one ) ){
+	// 			Nodes.get( i ).add( two );
+	// 		}
+	// 		if( equalNodes(Nodes.get( i ).get( 0 ), two ) ){
+	// 			Nodes.get( i ).add( one );
+	// 		}
+	// 	}
+	// }
+
+
+	// ADD EDGE FROM COORDINATE ONE TO TWO
+	public void addEdge(Coordinate parent, Coordinate child){
+
+		int parentIndex = getNodeIndex( parent );
+		if( ! edgeExist( parent, child ) ){
+				Nodes.get( parentIndex ).add( child );
 		}
-		if( ! nodeExist( two ) ){
-			addNode( one );
-		}
-		for( int i = 0 ; i < Nodes.size(); i++ ){
-			if( equalNodes( Nodes.get( i ).get( 0 ), one ) ){
-				Nodes.get( i ).add( two );
+	}
+
+	// checks if there exist edge from parent to child
+	public boolean edgeExist( Coordinate parent, Coordinate child){
+		int parentIndex = getNodeIndex( parent );
+		// boolean exist = false;
+		for( int i = 0 ; i < Nodes.get( parentIndex ).size( ); i++ ){
+			if( equalNodes( Nodes.get( parentIndex ).get( i ), child ) ){
+				return true;
 			}
-			if( equalNodes(Nodes.get( i ).get( 0 ), two ) ){
-				Nodes.get( i ).add( one );
-			}
 		}
+		return false;
 	}
 
 	public void removeEdge(Coordinate one, Coordinate two){
@@ -90,7 +112,7 @@ public class Graph{
 
 
 	public void runKNN(){
-		int k = 4;
+		int k = 5;
 		double maxDist = -1;
 		for( int i = 0; i < Nodes.size( ); i++){
 			Coordinate parent = Nodes.get( i ).get( 0 );
@@ -99,7 +121,7 @@ public class Graph{
 				if( i==j ){
 					continue;
 				}
-				else if( Nodes.get( i ).size( ) < k+1 && Nodes.get( j ).size( ) < k+1  ){
+				else if( Nodes.get( i ).size( ) < k+1 ){   /// && Nodes.get( j ).size( ) < k+1  ){
 					addEdge( parent, child );
 				}
 				else if( getDistance( parent, child ) < getMaxDistance( i ) ){
@@ -156,5 +178,9 @@ public class Graph{
 		}
 		return -1;
 	}
+
+	// public boolean contains( ArrayList ){
+	//
+	// }
 
 }
