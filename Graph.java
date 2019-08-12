@@ -7,8 +7,8 @@ public class Graph{
 	private ArrayList< ArrayList<Coordinate> > Nodes = new ArrayList< ArrayList<Coordinate> >( );
 	private ArrayList< Integer > Distances = new ArrayList< Integer >( );
 	private ArrayList< Obsticle > Obsticles = new ArrayList< Obsticle >( );
-	
-	
+
+
 	// PARENT ARRAY AND CHILD ARRAY
 	public Graph(){
 		System.out.println("graph constructor");
@@ -17,7 +17,7 @@ public class Graph{
 
 	public void addNode(Coordinate coord){
 		if( ! nodeExist( coord ) && ! nodeIsOnObsticle( coord ) ){
-			
+
 			Nodes.add( new ArrayList<Coordinate>() );
 			Nodes.get( Nodes.size( ) - 1).add( coord );
 		}
@@ -36,37 +36,21 @@ public class Graph{
 	public boolean edgeExist( Coordinate one, Coordinate two){
 		int indexOfOne = getNodeIndex( one );    //index of node_one as parent on parent ArrayList
 		int indexOfTwo = getNodeIndex( two );	// index of node_two as parent on parent ArrayList
-		
+
 		boolean twoInOne = Nodes.get( indexOfOne ).contains( two );		//
 		boolean oneInTwo = Nodes.get( indexOfTwo ).contains( one );    //
 
 		return  ( twoInOne && oneInTwo );
-		
+
 	}
 
-	public void addEdge(Coordinate one, Coordinate two){
-		System.out.printf("add edge between %s and %s\n", one.toString( ), two.toString( ) );
-		if( ! nodeExist( one ) ){
-			addNode( two );
-		}
-		if( ! nodeExist( two ) ){
-			addNode( one );
-		}
-		
-		if( edgeExist( one, two ) ){
-			return;
-		}
-		// TRAVERSE NODES ARRAYLIST 
-		// ADD NODE_ONE TO ARRAYLIST WITH 
-		for( int i = 0 ; i < Nodes.size(); i++ ){
-			if( equalNodes( Nodes.get( i ).get( 0 ), one ) ){
-				Nodes.get( i ).add( two );
-			}
-			if( equalNodes(Nodes.get( i ).get( 0 ), two ) ){
-				Nodes.get( i ).add( one );
-			}
-		}
+	public void addEdge	( Coordinate one, Coordinate two ){
+
+		int parentIndex = getNodeIndex( one );
+		this.Nodes.get( parentIndex ).add( two );
+
 	}
+
 
 	public void removeEdge(Coordinate one, Coordinate two){
 		System.out.printf( "edge between %s - %s\n", one.toString( ), two.toString( ) );
@@ -75,12 +59,11 @@ public class Graph{
 		int[] indexes = { indexOfOne, indexOfTwo };
 		//
 		for( int i = 0; i < 2 ; i++ ){
-			for( int j = 1; j < Nodes.get( indexes[ i ] ).size( ); j++ ){
-				if( equalNodes( Nodes.get( indexes[ i ] ).get( j ), one  ) || equalNodes( Nodes.get( indexes[ i ] ).get( j ), two  ) ){
-					System.out.printf( " removed %s from %s\n", Nodes.get( indexes[ i ] ).get( j ).toString( ), Nodes.get( indexes[ i ] ).get( 0 ).toString( )	 );
-					System.out.printf("with %s => %s", Nodes.get( indexes[ i ] ).get( 0 ).toString( ), Nodes.get( indexes[ i ] ) );
-					Nodes.get( indexes[ i ] ).remove( j );
-					System.out.printf("-> Now %s => %s\n", Nodes.get( indexes[ i ] ).get( 0 ).toString( ), Nodes.get( indexes[ i ] ) );
+			for( int j = 1; j < this.Nodes.get( indexes[ i ] ).size( ); j++ ){
+				if( equalNodes( this.Nodes.get( indexes[ i ] ).get( j ), one  ) || equalNodes( Nodes.get( indexes[ i ] ).get( j ), two  ) ){
+
+					this.Nodes.get( indexes[ i ] ).remove( j );
+
 					break;
 				}
 			}
@@ -107,6 +90,17 @@ public class Graph{
 		}
 	}
 
+	public void printGraphWithPositions(){
+		for( int i = 0; i < Nodes.size(); i++ ){
+			System.out.printf("(%d)%s ->", i , Nodes.get( i ).get( 0 ).toString( ) );
+			for( int j = 1; j < Nodes.get( i ).size(); j++ ){
+				Coordinate curr = this.Nodes.get( i ).get( j );
+				System.out.printf( " (%d)%s", getNodeIndex( curr ) , curr.toString(  ) );
+			}
+			System.out.println();
+		}
+	}
+
 	public void removeNode( Coordinate coord ){
 		for( int i = 0; i < Nodes.size( ); i++ ){
 			int index = Nodes.get( i ).indexOf( coord );
@@ -122,21 +116,28 @@ public class Graph{
 
 
 	public void runKNN(){
-		int k = 3;
+		int k = 6	;
 		double maxDist = -1;
 		for( int i = 0; i < Nodes.size( ); i++){
 			Coordinate parent = Nodes.get( i ).get( 0 );
+			System.out.printf("for parent : %s\n", parent.toString( ) );
 			for( int j = 0; j < Nodes.size(); j++ ){
 				Coordinate child = Nodes.get( j ).get( 0 );
 				if( i==j ){
-					continue;
+
 				}
-				else if( Nodes.get( i ).size( ) < k+1 ){     // && Nodes.get( j ).size( ) < k+1  ){
+				else if( this.Nodes.get( i ).size( ) < k+1 ){     // && Nodes.get( j ).size( ) < k+1  ){
 					addEdge( parent, child );
 				}
 				else if( getDistance( parent, child ) < getMaxDistance( i ) ){
 					// remove edge with maximum length
 					removeMaxLengthEdge( i );
+					addEdge( parent, child );
+				}
+				else{
+					System.out.println("non -> parent size = "+this.Nodes.get(i).size());
+					System.out.println("parent -> "+parent);
+
 				}
 			}
 			System.out.println("==============================================================");
@@ -189,11 +190,11 @@ public class Graph{
 		}
 		return -1;
 	}
-	
+
 	public void addObsticle(Coordinate topLeft, Coordinate bottomRight){
 		Obsticles.add( new Obsticle( topLeft, bottomRight ) );
 	}
-	
+
 	// CHECKS IF A SAMPLE POINT IS ON ANY OF THE OBSTICLES
 	public boolean nodeIsOnObsticle(Coordinate coord){
 		for( int i = 0; i < Obsticles.size( ); i++ ){
