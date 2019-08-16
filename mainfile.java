@@ -45,13 +45,13 @@ public class mainfile{
 
 		// int[][] map = new int[d][d];
 		Graph graph = new Graph();
-		
-		
-		
+
+
+
 		// I WAS TOO LAZY TO READ START AND END NODE SEPERATLY
 		// START AND END NODE ARE STORED IN startEndCoords ARRAY
 		// OF SIZE 2 -> CONTAINS BOTH START AND END NODES
-		// 
+		//
 		int x,y;
 		Coordinate[] startEndCoords = new Coordinate[2];
 		//	START AND END POINT
@@ -59,10 +59,10 @@ public class mainfile{
 			String[] coord = lines.get( i + 1 ).split( "," );
 			x = Integer.parseInt( coord[ 0 ] );
 			y = Integer.parseInt( coord[ 1 ] );
-			
-			
+
+
 			startEndCoords[ i ] = new Coordinate( x, y );
-			
+
 			// ADDING NODE TO GRAPH
 			graph.addNode( startEndCoords[ i ] );
 		}
@@ -97,43 +97,39 @@ public class mainfile{
 
 		}
 
-		// graph.runKNN( );
-		
 		// KKN IS A CLASS THAT EXTENDS THREAD CLASS
-		// 
+		//
 		KNN knn = new KNN( graph );
 		knn.run(  );
-		
+
 		graph = knn.getGraph( );
-		
-		
-		
-		ArrayList< ArrayList< Integer > > adjecencyMatrix = graph.getAdjecencyMatrix( );
-		
-		// Top sort
-		
-		for( int i = 0; i < adjecencyMatrix.size( ); i++ ){
-			System.out.println( adjecencyMatrix.get( i ) );
+
+
+		System.out.println( "distances	" );
+		ArrayList< ArrayList < Double > > distances = knn.getDistances( );
+		for( int i = 0; i < distances.size( ); i++ ){
+			System.out.println( distances.get( i ) );
 		}
-		
-		// System.out.println( adjecencyMatrix );
-		// graph.printGraph( );
+
+		System.out.println( "matrix" );
+		System.out.println( graph.getAdjecencyMatrix( ) );
+
 
 		System.out.println("end");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

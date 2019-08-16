@@ -4,47 +4,41 @@ import java.util.ArrayList;
 // import java.util.LinkedList;
 
 public class Graph{
-	
-	
-	private ArrayList< Coordinate > Nodes = new ArrayList< Coordinate >();  
-	
-	// private ArrayList < ArrayList< Integer > > AdjecencyMatrix = new ArrayList< ArrayList< Integer > >();
-	
+
+	private ArrayList< Coordinate > Nodes = new ArrayList< Coordinate >();
 	private ArrayList< Obsticle > Obsticles = new ArrayList< Obsticle >( );
-	
-	private ArrayList< ArrayList< Integer > > adjecencyMatrix; //  = new ArrayList< ArrayList< Integer > >( );
-	
-	
+	private AdjecencyMatrix adjecencyMatrix = new AdjecencyMatrix( );
+
 	Graph(  ){
-		
+
 	}
-	
-	
+
+
 	// POPULATE THE ADJECENCY MATRIX WITH ZEROS
-	public void populateAdjecencyMatrix( ){
-		adjecencyMatrix = new ArrayList< ArrayList< Integer > >( );
-		
-		int length = this.nodes.size();
-		
-		for( int i = 0; i < length; i++){
-			for( int j = 0; j < length; j++){
-				adjecencyMatrix.get( 0 ).set( j, 0 );
-			}
-		}
-		
-	}
-	
+	// public void populateAdjecencyMatrix( ){
+	// 	adjecencyMatrix = new ArrayList< ArrayList< Integer > >( );
+	//
+	// 	int length = this.nodes.size();
+	//
+	// 	for( int i = 0; i < length; i++){
+	// 		for( int j = 0; j < length; j++){
+	// 			adjecencyMatrix.get( 0 ).set( j, 0 );
+	// 		}
+	// 	}
+	//
+	// 	}
+
 	// public void removeNode( Coordinate coord ){
-	
+
 		// this.removeEdge();
 		// this.removeEdge();
 	// }
-	
+
 	public void addObsticle(Coordinate topLeft, Coordinate bottomRight){
 		Obsticles.add( new Obsticle( topLeft, bottomRight ) );
 	}
-	
-	
+
+
 	// CHECKS IF A SAMPLE POINT IS ON ANY OF THE OBSTICLES
 	public boolean nodeOnObsticle( Coordinate coord ){
 		for( int i = 0; i < Obsticles.size( ); i++ ){
@@ -54,8 +48,8 @@ public class Graph{
 		}
 		return false;
 	}
-	
-	
+
+
 	// RETURNS TRUE IF obsticle EXIST IN Obsticles LIST
 	public boolean obsticleExist( Obsticle obsticle ){
 		for( int i = 0; i < this.Obsticles.size( ); i++ ){
@@ -65,18 +59,18 @@ public class Graph{
 		}
 		return false;
 	}
-	
+
 	// RETURNS ARRAYLIST OF NODES CONNECTED TO PARENT
 	public ArrayList< Integer > getConnected( Coordinate coord ){
 		int parentIndex = this.getIndex( coord );
 		return this.getConnected( parentIndex );
 	}
-	
-	
+
+
 	public ArrayList< Integer > getConnected( int parentIndex ){
 		// int parentIndex = this.getIndex( coord );
-	
-		ArrayList< Integer > subArray = this.adjecencyMatrix.get( parentIndex );
+
+		ArrayList< Integer > subArray = this.adjecencyMatrix.getRow( parentIndex );
 		ArrayList< Integer > connected = new ArrayList< Integer >( );
 		for( int i = 0; i < this.Nodes.size( ); i++ ){
 			if( this.edgeExist( parentIndex, i ) ){
@@ -84,48 +78,48 @@ public class Graph{
 			}
 		}
 		return connected;
-		
+
 	}
-	
-	
+
+
 	public void removeEdge( Coordinate parent, Coordinate child ){
-		
+
 		int parentIndex = this.getIndex( parent );
 		int childIndex = this.getIndex( child );
-		
+
 		this.removeEdge( parentIndex, childIndex );
 	}
-	
+
 	public void removeEdge( int parentIndex, int childIndex ){
-		
+
 		this.adjSet( parentIndex, childIndex, 0 );
 	}
-	
+
 	public void addEdge( Coordinate parent, Coordinate child ){
 		int parentIndex = this.getIndex( parent );
 		int childIndex = this.getIndex( child );
-		
+
 		this.addEdge( parentIndex, childIndex );
 	}
-	
+
 	public void addEdge( int parentIndex, int childIndex ){
 		System.out.printf("adding %d -> %d\n", parentIndex, childIndex );
 		this.adjSet(  parentIndex, childIndex, 1 );
 	}
-	
-	
+
+
 	public void adjSet( Coordinate parent, Coordinate child, int v){
-		
+
 		int parentIndex = this.getIndex( parent );
 		int childIndex = this.getIndex( child );
-		
+
 		this.adjSet( parentIndex, childIndex, v );
 	}
-	
+
 	public void adjSet( int indexParent, int indexChild , int v){
-		this.adjecencyMatrix.get( indexParent ).set( indexChild, v );
+		this.adjecencyMatrix.set( indexParent, indexChild, v );
 	}
-	
+
 	public boolean edgeExist( int parentIndex, int childIndex ){
 
 		if( this.adjGetAt( parentIndex, childIndex ) == 1){
@@ -133,45 +127,39 @@ public class Graph{
 		}
 		return false;
 	}
-	
+
 	public boolean inBoundNodeIndex( int nodeIndex ){
 		if( nodeIndex < this.Nodes.size( ) ){
 			return true;
 		}
 		return false;
 	}
-	
+
 	public int adjGetAt( int x, int y ){
-		return this.adjecencyMatrix.get( x ).get( y );	
+		return this.adjecencyMatrix.get( x, y );
 	}
-	
+
 	public boolean edgeExist( Coordinate parent, Coordinate child ){
-		
+
 		int parentIndex = this.getIndex( parent );
 		int childIndex = this.getIndex( child );
-		
+
 		return this.edgeExist( parentIndex, childIndex );
 	}
-	
+
 	public void addNode( Coordinate coord ){
 		if( nodeExist( coord ) ){
 			System.out.println("Node already exist");
 		}
 		else{
 			this.Nodes.add( coord );
-			
-			this.adjecencyMatrix.add( new ArrayList );
-			
-			// int length = this.adjecencyMatrix.size( );
-			// if( length > 0 ){
-				// int innterLength = this.adjecencyMatrix.get( );
-			// }
-			
-			
+
+			// adding row and column in adjecencyMatrix
+			this.adjecencyMatrix.add( );
 		}
 	}
-	
-	
+
+
 	public boolean nodeExist( Coordinate coord){
 		for( int i = 0; i < this.Nodes.size( ); i++ ){
 			if( coord.equals( this.Nodes.get( i ) ) ){
@@ -180,10 +168,10 @@ public class Graph{
 		}
 		return false;
 	}
-	
-	
+
+
 	public int getIndex( Coordinate coord ){
-		
+
 		for( int i = 0; i < this.Nodes.size( ); i++ ){
 			if( equalNodes( coord, this.Nodes.get( i ) ) ){
 				return i;
@@ -195,20 +183,20 @@ public class Graph{
 	public boolean equalNodes( Coordinate one, Coordinate two ){
 		return one.equals( two );
 	}
-	
+
 	// RETURN MAXIMUM DISTANCE FROM PARENT NODE TO CHILDREN NODES
 	public double getDistance( Coordinate one, Coordinate two ){
 		double dist = Math.sqrt( ( one.getX( ) - two.getX( ) )^2 + ( one.getY( ) - two.getY( ) )^2 );
 		return dist;
 	}
-	
-	
+
+
 	// public void removeMaxLengthEdge( Coordinate parent ){
-		
+
 		// int parentIndex = this.getIndex( parent );
 		// this.removeMaxLengthEdge( parentIndex );
 	// }
-	
+
 	//	REMOVES NODE WITH MAXIMUM LENGTH
 	// public void removeMaxLengthEdge( int parentIndex ){
 		// int maxIndex = 0;
@@ -224,15 +212,15 @@ public class Graph{
 		// }
 		// removeEdge( parent, Nodes.get( parentIndex ).get( maxIndex ) );
 	// }
-	
-	public ArrayList< ArrayList< Integer > > getAdjecencyMatrix( ){
+
+	public AdjecencyMatrix getAdjecencyMatrix( ){
 		return this.adjecencyMatrix;
 	}
-	
+
 	public ArrayList< Coordinate > getNodes( ){
 		return this.Nodes;
 	}
-	
+
 }
 
 // ==========================================================================
@@ -257,9 +245,9 @@ public class Graph{
 	// private ArrayList< Coordinate >  Nodes = new ArrayList< Coordinate >( );
 	// private ArrayList< Integer > Distances = new ArrayList< Integer >( );
 	// private ArrayList< Obsticle > Obsticles = new ArrayList< Obsticle >( );
-	
-	
-	
+
+
+
 	// private ArrayList < ArrayList< Integer> > AdjecencyMatrix = new ArrayList< ArrayList< Integer > >();
 	// // PARENT ARRAY AND CHILD ARRAY
 	// public Graph(){
