@@ -35,5 +35,8 @@ public class Obsticle{
 		return betweenX( coord.getX( ) ) && betweenY( coord.getY() );
 	}
 	
-	
+	public boolean equals( Coordinate topLeft, Coordinate bottomRight ){
+		
+		return this.topLeft.equals( topLeft ) && this.bottomRight.equals( bottomRight );
+	}
 }
