@@ -1,11 +1,7 @@
-    
-language: python
-python:
-  - "3.5"  # 3.7 development branch
-cache: pip
-before_install:
-  - pip install mysql-connector-python
-install:
-  - pip install -r requirements.txt
-script:
-  - python3 test_script.py
+
+language: java
+jdk: openjdk11
+install: true
+script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+after_success: 
+  -mvn clean test jacoco:report coveralls:reportafter
