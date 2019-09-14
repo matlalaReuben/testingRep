@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <linux/limits.h>
 #include <float.h>
-
+#include <math.h>
 #include "test.h"
 // const double error = 0.001;
 
@@ -17,9 +17,9 @@
 // }
 
 int main(int argc, char ** argv){
-	
+
 	// printf("HELLO MOTHERFUCKER\n");
-	
+
 	return test(argc, argv);
 	// return 0;
 }

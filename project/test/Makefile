@@ -9,8 +9,8 @@ OBJECTS  = $(SOURCES:.c=.o)
 
 # compilation and linking
 CC      = gcc
-CFLAGS  = -std=c99 -ggdb3 -c
-LDFLAGS = 
+CFLAGS  = -fopenmp -std=c99 -ggdb3 -c
+LDFLAGS = -fopenmp
 WARN    = -Wall -Wextra -pedantic -Wno-unused-variable -Wno-unused-parameter
 COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(WARN)
 LINK.c    = $(CC)
