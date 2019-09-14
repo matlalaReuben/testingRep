@@ -15,11 +15,18 @@ void test_1(), test_2(), test_3();
 
 void init_test(){
 
-
-	double a = 2;
-	double b = 4;
-	double c = powf(a, b);
-	printf( "THE VALUE OF C : %f\n", c );
+	double start_time, end_time;
+	start_time = clock();
+	printf( "SLEEPING FOR 5\n" );
+	sleep(5);
+	end_time = clock();
+	printf( "START_TIME : %f | END-TIME : %f | DURATION : %f\n", start_time, end_time, ( end_time - start_time ) );
+	printf( "IN SECONDS : %f\n", ( ( double ) ( end_time - start_time ) )/ CLOCKS_PER_SEC );
+	//
+	// double a = 2;
+	// double b = 4;
+	// double c = powf(a, b);
+	// printf( "THE VALUE OF C : %f\n", c );
 
 	// printf( "INIT TEST\n" );
 	// double v = 0.01;
@@ -45,7 +52,7 @@ int test( int argc, char ** argv ){
 
 	// test_1( );
 	// test_2( );
-	test_3( );
+	// test_3( );
 	printf( "HELLO WORLD FOROM TEST\n" );
 	return 0;
 }
@@ -71,7 +78,6 @@ void test_2(){
 	// start = clock();
 	printf( "%sSTART TIME : %ld\n", BRIGHT_GREEN, start	 );
 	resetColor();
-
 	setColor( BRIGHT_RED );
 	printf( "TEST_2\n" );
 	setColor ( BRIGHT_MAGENTA );
