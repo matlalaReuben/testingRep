@@ -10,6 +10,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <stdlib.h>
 
 
@@ -21,16 +22,20 @@
 
 int main( int argc, char ** argv ){
 
-	double start_time, end_time;
-	start_time = clock();
- 	double serial = runSerial( );
-	end_time = clock( );
+	// double start_time, end_time;
+	struct timeval stop, start;
 
- 	printf( "%sSERIAL : %f | duration : %f%s\n", BRIGHT_MAGENTA, serial, (end_time - start_time), RESET );
+	gettimeofday( &start, NULL );
+	double serial = runSerial( );
+	gettimeofday( &stop, NULL );
 
-	start_time = clock();
+	printf( "SERIAL : %f\n", (double) ( stop.tv_sec - start.tv_sec ) );
+
+	gettimeofday( &start, NULL );
 	double parallel = runParallel();
-	end_time = clock( );
-	printf( "%sPARALLEL : %f | DURATION : %f%s\n",BRIGHT_MAGENTA, parallel, ( end_time - start_time ), RESET );
+	gettimeofday( &start, NULL );
+
+	printf( "PARALLEL : %f\n", (double) ( stop.tv_sec - start.tv_sec ) );
+
 	return 0;
 }

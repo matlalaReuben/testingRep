@@ -9,19 +9,32 @@
 #include "Color.h"
 #include <time.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 
 void test_1(), test_2(), test_3();
 
 void init_test(){
+	printf( "init_test\n" );
 
-	double start_time, end_time;
-	start_time = clock();
-	printf( "SLEEPING FOR 5\n" );
-	sleep(5);
-	end_time = clock();
-	printf( "START_TIME : %f | END-TIME : %f | DURATION : %f\n", start_time, end_time, ( end_time - start_time ) );
-	printf( "IN SECONDS : %f\n", ( ( double ) ( end_time - start_time ) )/ CLOCKS_PER_SEC );
+	struct timeval stop, start;
+	gettimeofday(&start, NULL);
+	//do stuff
+	printf( "SLEEPING FOR 2 SECONDS\n" );
+	sleep(2);
+	gettimeofday(&stop, NULL);
+
+	printf("took %lu\n", stop.tv_usec - start.tv_usec);
+	// printf("Duration MS %f\n", (double) (stop.tv_sec - start.tv_sec) * 1000 + (double) (stop.tv_usec - start.tv_usec) / 1000);
+	printf("Duration MS %f\n", (double) (stop.tv_sec - start.tv_sec) );
+
+	// double start_time, end_time;
+	// start_time = clock();
+	// printf( "SLEEPING FOR 5\n" );
+	// sleep(5);
+	// end_time = clock();
+	// printf( "START_TIME : %f | END-TIME : %f | DURATION : %f\n", start_time, end_time, ( end_time - start_time ) );
+	// printf( "IN SECONDS : %f\n", ( ( double ) ( end_time - start_time ) )/ CLOCKS_PER_SEC );
 	//
 	// double a = 2;
 	// double b = 4;
